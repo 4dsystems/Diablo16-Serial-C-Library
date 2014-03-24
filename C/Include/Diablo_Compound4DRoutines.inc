@@ -1461,6 +1461,18 @@ WORD mem_Heap()
   return GetAckResp() ;
 }
 
+WORD peekM(WORD  Address)
+{
+  unsigned char  towrite[4] ;
+  DWORD  written ;
+  towrite[0]= F_peekM >> 8 ;
+  towrite[1]= F_peekM ;
+  towrite[2]= Address >> 8 ;
+  towrite[3]= Address ;
+  WriteFile(ComHandle4D, &towrite[0], 4, &written, NULL) ;
+  return GetAckResp() ;
+}
+
 WORD pin_HI(WORD  Pin)
 {
   unsigned char  towrite[4] ;
@@ -1509,6 +1521,20 @@ WORD pin_Set(WORD  Mode, WORD  Pin)
   towrite[5]= Pin ;
   WriteFile(ComHandle4D, &towrite[0], 6, &written, NULL) ;
   return GetAckResp() ;
+}
+
+void pokeM(WORD  Address, WORD  WordValue)
+{
+  unsigned char  towrite[6] ;
+  DWORD  written ;
+  towrite[0]= F_pokeM >> 8 ;
+  towrite[1]= F_pokeM ;
+  towrite[2]= Address >> 8 ;
+  towrite[3]= Address ;
+  towrite[4]= WordValue >> 8 ;
+  towrite[5]= WordValue ;
+  WriteFile(ComHandle4D, &towrite[0], 6, &written, NULL) ;
+  GetAck() ;
 }
 
 void putCH(WORD  WordChar)
